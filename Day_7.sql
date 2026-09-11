@@ -205,3 +205,43 @@ ON c.category_id = p.category_id
 LEFT JOIN Orders_Q7 o
 ON p.product_id = o.product_id
 GROUP BY c.category_name;
+
+
+-- Q1. Task: Find employees whose salary is greater
+-- than their department's average salary using a CTE.
+
+CREATE TABLE Employees_Q1 (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(50),
+    department VARCHAR(50),
+    salary INT
+);
+
+INSERT INTO Employees_Q1 VALUES
+(1, 'Aman', 'IT', 50000),
+(2, 'Rahul', 'IT', 40000),
+(3, 'Priya', 'IT', 70000),
+(4, 'Neha', 'HR', 35000),
+(5, 'Karan', 'HR', 45000),
+(6, 'Simran', 'HR', 55000),
+(7, 'Rohit', 'Sales', 30000),
+(8, 'Anjali', 'Sales', 50000);
+
+
+WITH Department_Avg AS (
+    SELECT
+        department,
+        AVG(salary) AS avg_salary
+    FROM Employees_Q1
+    GROUP BY department
+)
+SELECT
+    e.employee_name,
+    e.department,
+    e.salary,
+    d.avg_salary
+FROM Employees_Q1 e
+JOIN Department_Avg d
+    ON e.department = d.department
+WHERE e.salary > d.avg_salary;
+
