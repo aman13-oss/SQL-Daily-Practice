@@ -245,3 +245,47 @@ JOIN Department_Avg d
     ON e.department = d.department
 WHERE e.salary > d.avg_salary;
 
+
+
+-- Q2. Task: Find the second-highest distinct salary
+-- in each department using a CTE.
+
+CREATE TABLE Employees_Q2 (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(50),
+    department VARCHAR(50),
+    salary INT
+);
+
+INSERT INTO Employees_Q2 VALUES
+(1, 'Aman', 'IT', 50000),
+(2, 'Rahul', 'IT', 70000),
+(3, 'Priya', 'IT', 60000),
+(4, 'Neha', 'HR', 40000),
+(5, 'Karan', 'HR', 60000),
+(6, 'Simran', 'HR', 50000),
+(7, 'Rohit', 'Sales', 30000),
+(8, 'Anjali', 'Sales', 45000),
+(9, 'Vikas', 'Sales', 40000);
+
+
+
+WITH Salary_Ranking AS (
+    SELECT
+        employee_id,
+        employee_name,
+        department,
+        salary,
+        DENSE_RANK() OVER (
+            PARTITION BY department
+            ORDER BY salary DESC
+        ) AS salary_rank
+    FROM Employees_Q2
+)
+SELECT
+    employee_name,
+    department,
+    salary
+FROM Salary_Ranking
+WHERE salary_rank = 2;
+
