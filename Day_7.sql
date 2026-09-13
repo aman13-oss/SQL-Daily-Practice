@@ -289,3 +289,38 @@ SELECT
 FROM Salary_Ranking
 WHERE salary_rank = 2;
 
+-- Q3. Task: Use a CTE to calculate total salary
+-- per department and display departments whose
+-- total salary exceeds 100000.
+
+CREATE TABLE Employees_Q3 (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(50),
+    department VARCHAR(50),
+    salary INT
+);
+
+INSERT INTO Employees_Q3 VALUES
+(1, 'Aman', 'IT', 60000),
+(2, 'Rahul', 'IT', 55000),
+(3, 'Priya', 'IT', 45000),
+(4, 'Neha', 'HR', 40000),
+(5, 'Karan', 'HR', 35000),
+(6, 'Simran', 'HR', 30000),
+(7, 'Rohit', 'Sales', 70000),
+(8, 'Anjali', 'Sales', 50000),
+(9, 'Vikas', 'Sales', 25000);
+
+
+WITH Department_Salary AS (
+    SELECT
+        department,
+        SUM(salary) AS total_salary
+    FROM Employees_Q3
+    GROUP BY department
+)
+SELECT
+    department,
+    total_salary
+FROM Department_Salary
+WHERE total_salary > 100000;
