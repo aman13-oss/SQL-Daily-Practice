@@ -324,3 +324,54 @@ SELECT
     total_salary
 FROM Department_Salary
 WHERE total_salary > 100000;
+
+-- Q4. Task: Use a CTE to calculate total sales
+-- for each product and display products whose
+-- total sales are greater than average product sales.
+
+CREATE TABLE Products_Q4 (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(50)
+);
+
+INSERT INTO Products_Q4 VALUES
+(1, 'Laptop'),
+(2, 'Mouse'),
+(3, 'Keyboard'),
+(4, 'Monitor'),
+(5, 'Printer');
+
+CREATE TABLE Sales_Q4 (
+    sale_id INT PRIMARY KEY,
+    product_id INT,
+    quantity INT,
+    price INT
+);
+
+INSERT INTO Sales_Q4 VALUES
+(101, 1, 2, 50000),
+(102, 2, 10, 500),
+(103, 3, 5, 1000),
+(104, 4, 3, 12000),
+(105, 5, 4, 5000);
+
+WITH Product_Sales AS (
+    SELECT
+        p.product_id,
+        p.product_name,
+        SUM(s.quantity * s.price) AS total_sales
+    FROM Products_Q4 p
+    JOIN Sales_Q4 s
+        ON p.product_id = s.product_id
+    GROUP BY p.product_id, p.product_name
+),
+Average_Sales AS (
+    SELECT AVG(total_sales) AS avg_sales
+    FROM Product_Sales
+)
+SELECT
+    ps.product_name,
+    ps.total_sales
+FROM Product_Sales ps
+CROSS JOIN Average_Sales av
+WHERE ps.total_sales > av.avg_sales;
