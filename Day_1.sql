@@ -86,3 +86,4 @@ Delete from employee where salary< 40000;
 
 -- 15. Delete all employees whose salary is below 60000
 Delete from employee where salary < 60000;
+P
