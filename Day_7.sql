@@ -375,3 +375,35 @@ SELECT
 FROM Product_Sales ps
 CROSS JOIN Average_Sales av
 WHERE ps.total_sales > av.avg_sales;
+
+-- Q5. Task: Rank employees by salary within each
+-- department using the RANK() window function.
+
+CREATE TABLE Employees_Q5 (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(50),
+    department VARCHAR(50),
+    salary INT
+);
+
+INSERT INTO Employees_Q5 VALUES
+(1, 'Aman', 'IT', 60000),
+(2, 'Rahul', 'IT', 80000),
+(3, 'Priya', 'IT', 70000),
+(4, 'Neha', 'HR', 40000),
+(5, 'Karan', 'HR', 60000),
+(6, 'Simran', 'HR', 50000),
+(7, 'Rohit', 'Sales', 30000),
+(8, 'Anjali', 'Sales', 50000),
+(9, 'Vikas', 'Sales', 40000);
+
+SELECT
+    employee_name,
+    department,
+    salary,
+    RANK() OVER (
+        PARTITION BY department
+        ORDER BY salary DESC
+    ) AS salary_rank
+FROM Employees_Q5;
+
