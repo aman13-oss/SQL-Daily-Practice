@@ -31,6 +31,12 @@ INSERT INTO EMPLOYEE
 VALUES
 (5, 'Riddam', 'Bangalore', '987124567', 'D20', 'MECH', 'TECH501', 42000, 'Riddam@gmail.com');
 
+
+INSERT INTO EMPLOYEE 
+VALUES
+(5=6, 'dam', 'Hyderabad', '987124357', 'D20', 'MECH', 'TECH506', 43000, 'dam@gmail.com');
+
+
 -- QUESTIONS
 
 -- 1. Display all the information of EMPLOYEE table
@@ -86,4 +92,3 @@ Delete from employee where salary< 40000;
 
 -- 15. Delete all employees whose salary is below 60000
 Delete from employee where salary < 60000;
-P
