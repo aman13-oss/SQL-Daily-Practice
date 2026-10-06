@@ -407,3 +407,42 @@ SELECT
     ) AS salary_rank
 FROM Employees_Q5;
 
+-- Q6. Task: Find the highest-paid employee in each
+-- department using ROW_NUMBER().
+
+CREATE TABLE Employees_Q6 (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(50),
+    department VARCHAR(50),
+    salary INT
+);
+
+INSERT INTO Employees_Q6 VALUES
+(1, 'Aman', 'IT', 60000),
+(2, 'Rahul', 'IT', 80000),
+(3, 'Priya', 'IT', 70000),
+(4, 'Neha', 'HR', 40000),
+(5, 'Karan', 'HR', 60000),
+(6, 'Simran', 'HR', 50000),
+(7, 'Rohit', 'Sales', 30000),
+(8, 'Anjali', 'Sales', 50000),
+(9, 'Vikas', 'Sales', 40000);
+
+WITH Employee_Ranking AS (
+    SELECT
+        employee_id,
+        employee_name,
+        department,
+        salary,
+        ROW_NUMBER() OVER (
+            PARTITION BY department
+            ORDER BY salary DESC, employee_id
+        ) AS rn
+    FROM Employees_Q6
+)
+SELECT
+    employee_name,
+    department,
+    salary
+FROM Employee_Ranking
+WHERE rn = 1;
