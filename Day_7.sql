@@ -446,3 +446,37 @@ SELECT
     salary
 FROM Employee_Ranking
 WHERE rn = 1;
+
+-- Q7. Task: Compare monthly sales with the previous month
+-- using the LAG() window function.
+
+CREATE TABLE Monthly_Sales_Q7 (
+    month_id INT PRIMARY KEY,
+    month_name VARCHAR(20),
+    total_sales INT
+);
+
+INSERT INTO Monthly_Sales_Q7 VALUES
+(1, 'January', 50000),
+(2, 'February', 65000),
+(3, 'March', 60000),
+(4, 'April', 80000),
+(5, 'May', 75000),
+(6, 'June', 90000);
+
+WITH Sales_Comparison AS (
+    SELECT
+        month_name,
+        total_sales,
+        LAG(total_sales) OVER (
+            ORDER BY month_id
+        ) AS previous_month_sales
+    FROM Monthly_Sales_Q7
+)
+SELECT
+    month_name,
+    total_sales,
+    previous_month_sales,
+    total_sales - previous_month_sales AS sales_difference
+FROM Sales_Comparison;
+
